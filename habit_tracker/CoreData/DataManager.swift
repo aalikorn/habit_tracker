@@ -9,31 +9,32 @@ import Foundation
 import CoreData
 
 protocol DataManagerProtocol {
-    func fetchHabits() -> [Habit]
-    func addHabit(name: String, frequency: Frequency) -> Bool
+    func fetchHabits() -> [HabitEntity]
+    func addHabit(name: String, frequency: Frequency, date: Date) -> Bool
     func removeHabit(name: String) -> Bool
-    func editHabit(name: String, newName: String?, newFrequency: Frequency?) -> Bool
-    func getHabit(name: String) -> Habit?
+    func editHabit(name: String, newName: String?, newFrequency: Frequency?, newDate: Date?) -> Bool
+    func getHabit(name: String) -> HabitEntity?
 }
 
 class DataManager: DataManagerProtocol {
     private let context = CoreDataStack.shared.persistentContainer.viewContext
     
-    func fetchHabits() -> [Habit] {
+    func fetchHabits() -> [HabitEntity] {
         let fetchRequest: NSFetchRequest<HabitEntity> = HabitEntity.fetchRequest()
         do {
             let habits = try context.fetch(fetchRequest)
-            return habits.map(habitEntityToHabit(entity:))
+            return habits
         } catch {
             print("Ошибка при получении данных: \(error)")
             return []
         }
     }
     
-    func addHabit(name: String, frequency: Frequency) -> Bool {
+    func addHabit(name: String, frequency: Frequency, date: Date) -> Bool {
         let newHabit = HabitEntity(context: context)
         newHabit.name = name
         newHabit.frequency = frequency.rawValue
+        newHabit.startDate = date
         
         saveContext()
         return true
@@ -56,7 +57,7 @@ class DataManager: DataManagerProtocol {
         return false
     }
     
-    func editHabit(name: String, newName: String?, newFrequency: Frequency?) -> Bool {
+    func editHabit(name: String, newName: String?, newFrequency: Frequency?, newDate: Date?) -> Bool {
         let fetchRequest: NSFetchRequest<HabitEntity> = HabitEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
 
@@ -69,6 +70,10 @@ class DataManager: DataManagerProtocol {
                 if let newFrequency = newFrequency {
                     habitToEdit.frequency = newFrequency.rawValue
                 }
+                if let newDate = newDate {
+                    habitToEdit.startDate = newDate
+                }
+
                 
                 try context.save()
                 return true
@@ -79,13 +84,13 @@ class DataManager: DataManagerProtocol {
         return false
     }
     
-    func getHabit(name: String) -> Habit? {
+    func getHabit(name: String) -> HabitEntity? {
         let fetchRequest: NSFetchRequest<HabitEntity> = HabitEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
         
           do {
               let result = try context.fetch(fetchRequest)
-              return result.first.map(habitEntityToHabit(entity:))
+              return result.first
           } catch {
               print("Ошибка при поиске привычки: \(error)")
               return nil
@@ -93,17 +98,11 @@ class DataManager: DataManagerProtocol {
     }
     
     func saveContext() {
+        guard context.hasChanges else { return }
         do {
             try context.save()
         } catch {
             print("Ошибка при сохранении: \(error)")
         }
-    }
-    
-    func habitEntityToHabit(entity: HabitEntity) -> Habit {
-        return Habit(
-            name: entity.name ?? "Без названия",
-            frequency: Frequency(rawValue: entity.frequency ?? "daily") ?? .daily
-        )
     }
 }
