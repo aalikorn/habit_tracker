@@ -29,9 +29,22 @@
 		BC693E522D50058200A9C490 /* habit_trackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = habit_trackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BCA112742D50507E00EB079B /* Exceptions for "habit_tracker" folder in "habit_tracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BC693E2E2D50058100A9C490 /* habit_tracker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BC693E312D50058100A9C490 /* habit_tracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BCA112742D50507E00EB079B /* Exceptions for "habit_tracker" folder in "habit_tracker" target */,
+			);
 			path = habit_tracker;
 			sourceTree = "<group>";
 		};
