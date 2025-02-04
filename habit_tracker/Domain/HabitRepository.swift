@@ -13,6 +13,7 @@ protocol HabitRepositoryProtocol {
     func removeHabit(name: String) -> Bool
     func editHabit(name: String, newName: String?, newFrequency: Frequency?, newDate: Date?) -> Bool
     func getHabit(name: String) -> Habit?
+    func setIsDone(name: String, isDone: Bool) -> Bool
 }
 
 
@@ -41,6 +42,10 @@ class HabitRepository: HabitRepositoryProtocol {
     
     func getHabit(name: String) -> Habit? {
         return dataManager.getHabit(name: name).flatMap(habitEntityToHabit)
+    }
+    
+    func setIsDone(name: String, isDone: Bool) -> Bool {
+        return dataManager.setIsDone(name: name, isDone: isDone)
     }
     
     func habitEntityToHabit(entity: HabitEntity) -> Habit {

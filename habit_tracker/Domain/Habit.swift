@@ -11,11 +11,15 @@ class Habit {
     var name: String
     var frequency: Frequency
     var startDate: Date
+    var isDone: Bool
+    var lastResetDate: Date
     
     init(name: String, frequency: Frequency, date: Date = Date()) {
         self.name = name
         self.frequency = frequency
         self.startDate = date
+        self.isDone = false
+        self.lastResetDate = Date()
     }
 }
 

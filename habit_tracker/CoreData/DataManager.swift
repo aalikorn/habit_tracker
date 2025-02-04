@@ -14,6 +14,7 @@ protocol DataManagerProtocol {
     func removeHabit(name: String) -> Bool
     func editHabit(name: String, newName: String?, newFrequency: Frequency?, newDate: Date?) -> Bool
     func getHabit(name: String) -> HabitEntity?
+    func setIsDone(name: String, isDone: Bool) -> Bool
 }
 
 class DataManager: DataManagerProtocol {
@@ -95,6 +96,24 @@ class DataManager: DataManagerProtocol {
               print("Ошибка при поиске привычки: \(error)")
               return nil
           }
+    }
+    
+    func setIsDone(name: String, isDone: Bool) -> Bool {
+        let fetchRequest: NSFetchRequest<HabitEntity> = HabitEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        do {
+            let result = try context.fetch(fetchRequest).first
+            if let result = result {
+                result.isDone = isDone
+                result.lastResetDate = Date()
+                return true
+            }
+            print("Привычка не найдена")
+            return false
+        } catch {
+            print("Ошибка при поиске привычки: \(error)")
+            return false
+        }
     }
     
     func saveContext() {
