@@ -32,6 +32,11 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sectionTitles = ["Сегодня", "На этой неделе", "В этом месяце"]
+        return sectionTitles[section]
+    }
+    
     func setupTableView() {
         habitsTableView.delegate = self
         habitsTableView.dataSource = self

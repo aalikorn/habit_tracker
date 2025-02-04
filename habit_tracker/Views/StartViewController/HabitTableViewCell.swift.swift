@@ -26,6 +26,7 @@ class HabitTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
+        checkboxButton.addTarget(self, action: #selector(didTouchCheckbox), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -41,13 +42,19 @@ class HabitTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
         habitNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-        habitNameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        habitNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+        habitNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+
         
         checkboxButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         checkboxButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
         checkboxButton.widthAnchor.constraint(equalToConstant: 30),
         checkboxButton.heightAnchor.constraint(equalToConstant: 30)
         ])
+    }
+    
+    @objc private func didTouchCheckbox() {
+        checkboxButton.isSelected.toggle()
     }
     
     func configure(with habit: Habit) {
