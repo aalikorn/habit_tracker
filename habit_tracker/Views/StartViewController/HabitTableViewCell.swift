@@ -55,10 +55,16 @@ class HabitTableViewCell: UITableViewCell {
     
     @objc private func didTouchCheckbox() {
         checkboxButton.isSelected.toggle()
+        updateHabitNameTextColor()
     }
     
     func configure(with habit: Habit) {
         habitNameLabel.text = habit.name
         checkboxButton.isSelected = habit.isDone
+        updateHabitNameTextColor()
+    }
+    
+    private func updateHabitNameTextColor() {
+        habitNameLabel.textColor = checkboxButton.isSelected ? .gray : .black
     }
 }

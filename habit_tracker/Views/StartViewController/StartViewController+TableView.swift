@@ -28,7 +28,7 @@ extension StartViewController: UITableViewDelegate, UITableViewDataSource {
             }
         let habit = Habit(name: "бег", frequency: .daily)
         cell.configure(with: habit)
-        
+        cell.selectionStyle = .none
         return cell
     }
     
